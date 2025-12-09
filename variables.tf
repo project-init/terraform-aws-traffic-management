@@ -57,7 +57,7 @@ variable "secure_token" {
 ########################################################################################################################
 
 variable "zone_id" {
-  type     = string
-  nullable = false
+  type        = string
+  nullable    = false
   description = "The zone id of the domain for the account."
 }
