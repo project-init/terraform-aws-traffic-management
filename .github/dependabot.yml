@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Github Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+
+  # Terraform
+  - package-ecosystem: 'terraform'
+    directory: '/'
+    schedule:
+      interval: 'monthly'

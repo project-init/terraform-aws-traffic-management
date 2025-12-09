@@ -1,0 +1,24 @@
+[tools]
+opentofu = "1.10.6"
+terraform-docs = "latest"
+
+[env]
+MISE_DISABLE_BACKENDS = "aqua,ubi"
+
+[settings]
+experimental = true
+
+# Lint and Format
+
+[tasks.format]
+run = "tofu fmt -recursive"
+
+# Release
+
+[tasks.start-release]
+run = "./scripts/git-tag-release.sh"
+
+# Documentation
+
+[tasks.docs]
+run = "terraform-docs ."
