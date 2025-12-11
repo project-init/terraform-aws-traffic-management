@@ -151,13 +151,6 @@ resource "aws_lb_listener_rule" "api_prelive" {
   }
 
   condition {
-    http_header {
-      http_header_name = "X-Allow"
-      values           = [local.secure_token]
-    }
-  }
-
-  condition {
     host_header {
       values = [local.api_domain_name]
     }
