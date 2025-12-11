@@ -22,3 +22,8 @@ output "internal_lb_https_listener_arn" {
   value       = aws_lb_listener.https.arn
   description = "The HTTPS Listener ARN of the internal load balancer."
 }
+
+output "internal_lb_https_prelive_listener_arn" {
+  value       = aws_lb_listener.https_prelive.arn
+  description = "The HTTPS Listener ARN of the internal load balancer."
+}
