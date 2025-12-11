@@ -215,15 +215,6 @@ resource "aws_security_group_rule" "internal_load_balancer_https_ingress_cloudfr
   prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront_prefix_list.id]
 }
 
-resource "aws_security_group_rule" "internal_load_balancer_https_prelive_ingress_cloudfront" {
-  security_group_id = aws_security_group.internal_load_balancer.id
-  type              = "ingress"
-  protocol          = "tcp"
-  from_port         = 9001
-  to_port           = 9001
-  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront_prefix_list.id]
-}
-
 resource "aws_security_group_rule" "internal_load_balancer_egress" {
   type              = "egress"
   from_port         = 0
