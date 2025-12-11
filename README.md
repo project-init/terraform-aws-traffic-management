@@ -39,14 +39,19 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_alb.internal_load_balancer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/alb) | resource |
+| [aws_lb_listener.http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_listener.https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener.https_prelive](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_listener_rule.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
+| [aws_lb_listener_rule.api_prelive](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_target_group.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
+| [aws_lb_target_group.api_prelive](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_security_group.internal_load_balancer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.internal_load_balancer_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.internal_load_balancer_http_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.internal_load_balancer_https_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.internal_load_balancer_https_ingress_cloudfront](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.internal_load_balancer_https_prelive_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_ssm_parameter.secure_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ec2_managed_prefix_list.cloudfront_prefix_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_managed_prefix_list) | data source |
 | [aws_ssm_parameter.secure_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
@@ -70,6 +75,7 @@ No modules.
 |------|-------------|
 | <a name="output_internal_lb_dns_name"></a> [internal\_lb\_dns\_name](#output\_internal\_lb\_dns\_name) | The DNS name of the internal load balancer. |
 | <a name="output_internal_lb_https_listener_arn"></a> [internal\_lb\_https\_listener\_arn](#output\_internal\_lb\_https\_listener\_arn) | The HTTPS Listener ARN of the internal load balancer. |
+| <a name="output_internal_lb_https_prelive_listener_arn"></a> [internal\_lb\_https\_prelive\_listener\_arn](#output\_internal\_lb\_https\_prelive\_listener\_arn) | The HTTPS Listener ARN of the internal load balancer. |
 | <a name="output_internal_lb_name"></a> [internal\_lb\_name](#output\_internal\_lb\_name) | The name of the internal load balancer. |
 | <a name="output_internal_lb_security_group_id"></a> [internal\_lb\_security\_group\_id](#output\_internal\_lb\_security\_group\_id) | The Security Group ID of the internal load balancer. |
 | <a name="output_internal_lb_zone_id"></a> [internal\_lb\_zone\_id](#output\_internal\_lb\_zone\_id) | The Zone ID of the internal load balancer. |

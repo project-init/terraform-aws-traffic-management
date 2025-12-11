@@ -1,5 +1,5 @@
 [tools]
-opentofu = "1.10.6"
+opentofu = "1.11.1"
 terraform-docs = "latest"
 
 [env]
