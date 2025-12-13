@@ -73,6 +73,8 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_api_prelive_target_group_arn"></a> [api\_prelive\_target\_group\_arn](#output\_api\_prelive\_target\_group\_arn) | The ARN for the target group managing the Prelive API service. |
+| <a name="output_api_target_group_arn"></a> [api\_target\_group\_arn](#output\_api\_target\_group\_arn) | The ARN for the target group managing the API service. |
 | <a name="output_internal_lb_dns_name"></a> [internal\_lb\_dns\_name](#output\_internal\_lb\_dns\_name) | The DNS name of the internal load balancer. |
 | <a name="output_internal_lb_https_listener_arn"></a> [internal\_lb\_https\_listener\_arn](#output\_internal\_lb\_https\_listener\_arn) | The HTTPS Listener ARN of the internal load balancer. |
 | <a name="output_internal_lb_https_prelive_listener_arn"></a> [internal\_lb\_https\_prelive\_listener\_arn](#output\_internal\_lb\_https\_prelive\_listener\_arn) | The HTTPS Listener ARN of the internal load balancer. |

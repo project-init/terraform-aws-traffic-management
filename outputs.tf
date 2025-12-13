@@ -27,3 +27,13 @@ output "internal_lb_https_prelive_listener_arn" {
   value       = aws_lb_listener.https_prelive.arn
   description = "The HTTPS Listener ARN of the internal load balancer."
 }
+
+output "api_target_group_arn" {
+  value       = aws_lb_target_group.api.arn
+  description = "The ARN for the target group managing the API service."
+}
+
+output "api_prelive_target_group_arn" {
+  value       = aws_lb_target_group.api_prelive.arn
+  description = "The ARN for the target group managing the Prelive API service."
+}
