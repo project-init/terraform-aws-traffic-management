@@ -84,7 +84,7 @@ resource "aws_lb_target_group" "api" {
   name             = "public-api-${var.environment}-tg"
   target_type      = "ip"
   port             = 80
-  protocol         = "HTTPS"
+  protocol         = "HTTP"
   protocol_version = "HTTP1"
   vpc_id           = var.vpc_id
 
@@ -103,7 +103,7 @@ resource "aws_lb_target_group" "api_prelive" {
   name             = "public-api-${var.environment}-prelive-tg"
   target_type      = "ip"
   port             = 80
-  protocol         = "HTTPS"
+  protocol         = "HTTP"
   protocol_version = "HTTP1"
   vpc_id           = var.vpc_id
 
