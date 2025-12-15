@@ -46,6 +46,7 @@ No modules.
 | [aws_lb_listener_rule.api_prelive](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_target_group.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_lb_target_group.api_prelive](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
+| [aws_route53_record.domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_security_group.internal_load_balancer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.internal_load_balancer_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.internal_load_balancer_http_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -64,6 +65,7 @@ No modules.
 | <a name="input_api_health_check_path"></a> [api\_health\_check\_path](#input\_api\_health\_check\_path) | The path of the health check endpoint on your API server. | `string` | `"/health"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | The main domain being used in the account. Will be prefixed with api. to control API traffic. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment name being deployed to. | `string` | n/a | yes |
+| <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the Hosted Zone to use for routing. | `string` | n/a | yes |
 | <a name="input_ipv4_primary_cidr_block"></a> [ipv4\_primary\_cidr\_block](#input\_ipv4\_primary\_cidr\_block) | The IPV4 CIDR Block of the VPC. | `string` | n/a | yes |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | The private subnet ids of the VPC. | `list(string)` | n/a | yes |
 | <a name="input_secure_token"></a> [secure\_token](#input\_secure\_token) | The secure token to set to ensure only Cloudfront is used when public traffic trickles down to the Internal LB. Should set with a initially, then changed to an empty string and controlled via the parameter store. | `string` | `""` | no |

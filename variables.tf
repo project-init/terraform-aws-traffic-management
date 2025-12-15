@@ -51,3 +51,13 @@ variable "secure_token" {
   nullable    = true
   description = "The secure token to set to ensure only Cloudfront is used when public traffic trickles down to the Internal LB. Should set with a initially, then changed to an empty string and controlled via the parameter store."
 }
+
+########################################################################################################################
+### Route53
+########################################################################################################################
+
+variable "hosted_zone_id" {
+  type        = string
+  nullable    = false
+  description = "The ID of the Hosted Zone to use for routing."
+}

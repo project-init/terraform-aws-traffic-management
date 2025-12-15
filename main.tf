@@ -76,7 +76,7 @@ resource "aws_lb_listener" "https_prelive" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.api.arn
+    target_group_arn = aws_lb_target_group.api_prelive.arn
   }
 }
 
@@ -84,7 +84,7 @@ resource "aws_lb_target_group" "api" {
   name             = "public-api-${var.environment}-tg"
   target_type      = "ip"
   port             = 80
-  protocol         = "HTTPS"
+  protocol         = "HTTP"
   protocol_version = "HTTP1"
   vpc_id           = var.vpc_id
 
@@ -103,7 +103,7 @@ resource "aws_lb_target_group" "api_prelive" {
   name             = "public-api-${var.environment}-prelive-tg"
   target_type      = "ip"
   port             = 80
-  protocol         = "HTTPS"
+  protocol         = "HTTP"
   protocol_version = "HTTP1"
   vpc_id           = var.vpc_id
 
@@ -147,7 +147,7 @@ resource "aws_lb_listener_rule" "api_prelive" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.api.arn
+    target_group_arn = aws_lb_target_group.api_prelive.arn
   }
 
   condition {
@@ -216,4 +216,21 @@ resource "aws_security_group_rule" "internal_load_balancer_egress" {
   security_group_id = aws_security_group.internal_load_balancer.id
   cidr_blocks       = ["0.0.0.0/0"]
   ipv6_cidr_blocks  = ["::/0"]
+}
+
+########################################################################################################################
+### Internal Load Balancer
+########################################################################################################################
+
+resource "aws_route53_record" "domain" {
+  name = local.api_domain_name
+  type = "A"
+
+  alias {
+    name                   = aws_alb.internal_load_balancer.dns_name
+    zone_id                = aws_alb.internal_load_balancer.zone_id
+    evaluate_target_health = true
+  }
+
+  zone_id = var.hosted_zone_id
 }
