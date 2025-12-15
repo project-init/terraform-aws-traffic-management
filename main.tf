@@ -242,205 +242,205 @@ resource "aws_cloudfront_vpc_origin" "alb" {
   }
 }
 
-# resource "aws_cloudfront_distribution" "alb_distribution" {
-#   enabled         = true
-#   is_ipv6_enabled = true
-#   aliases         = [local.api_domain_name]
-#
-#   # Use the cheapest US based option initially. 200 gives more countries, and ALL gives all. Each "upgrade" costs more.
-#   price_class = "PriceClass_100"
-#
-#   web_acl_id = aws_wafv2_web_acl.waf.arn
-#
-#   origin {
-#     domain_name = aws_alb.internal_load_balancer.dns_name
-#     origin_id   = local.origin_name
-#
-#     vpc_origin_config {
-#       vpc_origin_id = aws_cloudfront_vpc_origin.alb.id
-#     }
-#
-#     # Add a custom HTTP header to authenticate requests from CloudFront
-#     custom_header {
-#       name  = "X-Allow"
-#       value = local.secure_token
-#     }
-#   }
-#
-#   default_cache_behavior {
-#     target_origin_id       = local.origin_name
-#     viewer_protocol_policy = "redirect-to-https"
-#
-#     min_ttl     = 0
-#     default_ttl = 0
-#     max_ttl     = 0
-#
-#     forwarded_values {
-#       query_string = true
-#       headers      = ["*"]
-#
-#       cookies {
-#         forward = "all"
-#       }
-#     }
-#
-#     allowed_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]
-#     cached_methods  = ["GET", "HEAD", "OPTIONS"]
-#   }
-#
-#   restrictions {
-#     geo_restriction {
-#       restriction_type = "whitelist"
-#       locations        = ["US"]
-#     }
-#   }
-#
-#   viewer_certificate {
-#     acm_certificate_arn = var.acm_certificate_arn
-#     ssl_support_method  = "sni-only"
-#   }
-# }
-#
-# resource "aws_route53_record" "domain" {
-#   name = local.api_domain_name
-#   type = "A"
-#
-#   alias {
-#     name                   = aws_cloudfront_distribution.alb_distribution.domain_name
-#     zone_id                = aws_cloudfront_distribution.alb_distribution.hosted_zone_id
-#     evaluate_target_health = true
-#   }
-#
-#   zone_id = var.hosted_zone_id
-# }
-#
-# resource "aws_wafv2_web_acl" "waf" {
-#   name        = "waf-${var.environment}"
-#   description = "WAF for ${var.environment} Cloudfront"
-#   scope       = "CLOUDFRONT"
-#
-#   default_action {
-#     allow {}
-#   }
-#
-#   rule {
-#     name     = "AWS-AWSManagedRulesCommonRuleSet"
-#     priority = 0
-#
-#     override_action {
-#       none {}
-#     }
-#
-#     statement {
-#       managed_rule_group_statement {
-#         name        = "AWSManagedRulesCommonRuleSet"
-#         vendor_name = "AWS"
-#
-#         rule_action_override {
-#           action_to_use {
-#             allow {}
-#           }
-#           name = "SizeRestrictions_BODY"
-#         }
-#       }
-#     }
-#     visibility_config {
-#       cloudwatch_metrics_enabled = false
-#       metric_name                = "AWS-AWSManagedRulesCommonRuleSet"
-#       sampled_requests_enabled   = false
-#     }
-#   }
-#
-#   rule {
-#     name     = "AWS-AWSManagedRulesAmazonIpReputationList"
-#     priority = 1
-#
-#     override_action {
-#       none {}
-#     }
-#
-#     statement {
-#       managed_rule_group_statement {
-#         name        = "AWSManagedRulesAmazonIpReputationList"
-#         vendor_name = "AWS"
-#       }
-#     }
-#     visibility_config {
-#       cloudwatch_metrics_enabled = false
-#       metric_name                = "AWS-AWSManagedRulesAmazonIpReputationList"
-#       sampled_requests_enabled   = false
-#     }
-#   }
-#
-#   rule {
-#     name     = "AWS-AWSManagedRulesSQLiRuleSet"
-#     priority = 2
-#
-#     override_action {
-#       none {}
-#     }
-#
-#     statement {
-#       managed_rule_group_statement {
-#         name        = "AWSManagedRulesSQLiRuleSet"
-#         vendor_name = "AWS"
-#       }
-#     }
-#     visibility_config {
-#       cloudwatch_metrics_enabled = false
-#       metric_name                = "AWS-AWSManagedRulesSQLiRuleSet"
-#       sampled_requests_enabled   = false
-#     }
-#   }
-#
-#   rule {
-#     name     = "AccountTakeoverProtection"
-#     priority = 3
-#
-#     override_action {
-#       count {}
-#     }
-#
-#     statement {
-#       managed_rule_group_statement {
-#         name        = "AWSManagedRulesATPRuleSet"
-#         vendor_name = "AWS"
-#
-#         managed_rule_group_configs {
-#           aws_managed_rules_atp_rule_set {
-#             login_path = "/v1/login"
-#
-#             request_inspection {
-#               payload_type = "FORM_ENCODED"
-#               username_field {
-#                 identifier = "/email"
-#               }
-#               password_field {
-#                 identifier = "/password"
-#               }
-#             }
-#
-#             response_inspection {
-#               status_code {
-#                 failure_codes = ["403"]
-#                 success_codes = ["200"]
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#
-#     visibility_config {
-#       cloudwatch_metrics_enabled = false
-#       metric_name                = "AWS-AWSManagedRulesATPRuleSet"
-#       sampled_requests_enabled   = false
-#     }
-#   }
-#
-#   visibility_config {
-#     cloudwatch_metrics_enabled = false
-#     metric_name                = "WAF-Metrics"
-#     sampled_requests_enabled   = false
-#   }
-# }
+resource "aws_cloudfront_distribution" "alb_distribution" {
+  enabled         = true
+  is_ipv6_enabled = true
+  aliases         = [local.api_domain_name]
+
+  # Use the cheapest US based option initially. 200 gives more countries, and ALL gives all. Each "upgrade" costs more.
+  price_class = "PriceClass_100"
+
+  web_acl_id = aws_wafv2_web_acl.waf.arn
+
+  origin {
+    domain_name = aws_alb.internal_load_balancer.dns_name
+    origin_id   = local.origin_name
+
+    vpc_origin_config {
+      vpc_origin_id = aws_cloudfront_vpc_origin.alb.id
+    }
+
+    # Add a custom HTTP header to authenticate requests from CloudFront
+    custom_header {
+      name  = "X-Allow"
+      value = local.secure_token
+    }
+  }
+
+  default_cache_behavior {
+    target_origin_id       = local.origin_name
+    viewer_protocol_policy = "redirect-to-https"
+
+    min_ttl     = 0
+    default_ttl = 0
+    max_ttl     = 0
+
+    forwarded_values {
+      query_string = true
+      headers      = ["*"]
+
+      cookies {
+        forward = "all"
+      }
+    }
+
+    allowed_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]
+    cached_methods  = ["GET", "HEAD", "OPTIONS"]
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "whitelist"
+      locations        = ["US"]
+    }
+  }
+
+  viewer_certificate {
+    acm_certificate_arn = var.acm_certificate_arn
+    ssl_support_method  = "sni-only"
+  }
+}
+
+resource "aws_route53_record" "domain" {
+  name = local.api_domain_name
+  type = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.alb_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.alb_distribution.hosted_zone_id
+    evaluate_target_health = true
+  }
+
+  zone_id = var.hosted_zone_id
+}
+
+resource "aws_wafv2_web_acl" "waf" {
+  name        = "waf-${var.environment}"
+  description = "WAF for ${var.environment} Cloudfront"
+  scope       = "CLOUDFRONT"
+
+  default_action {
+    allow {}
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesCommonRuleSet"
+    priority = 0
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+
+        rule_action_override {
+          action_to_use {
+            allow {}
+          }
+          name = "SizeRestrictions_BODY"
+        }
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "AWS-AWSManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesAmazonIpReputationList"
+    priority = 1
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAmazonIpReputationList"
+        vendor_name = "AWS"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "AWS-AWSManagedRulesAmazonIpReputationList"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesSQLiRuleSet"
+    priority = 2
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesSQLiRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "AWS-AWSManagedRulesSQLiRuleSet"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  rule {
+    name     = "AccountTakeoverProtection"
+    priority = 3
+
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesATPRuleSet"
+        vendor_name = "AWS"
+
+        managed_rule_group_configs {
+          aws_managed_rules_atp_rule_set {
+            login_path = "/v1/login"
+
+            request_inspection {
+              payload_type = "FORM_ENCODED"
+              username_field {
+                identifier = "/email"
+              }
+              password_field {
+                identifier = "/password"
+              }
+            }
+
+            response_inspection {
+              status_code {
+                failure_codes = ["403"]
+                success_codes = ["200"]
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "AWS-AWSManagedRulesATPRuleSet"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = false
+    metric_name                = "WAF-Metrics"
+    sampled_requests_enabled   = false
+  }
+}
