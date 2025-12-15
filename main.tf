@@ -394,7 +394,7 @@ resource "aws_wafv2_web_acl" "waf" {
   }
 
   rule {
-    name     = "Account Takeover Protection"
+    name     = "AccountTakeoverProtection"
     priority = 3
 
     override_action {
