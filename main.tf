@@ -147,7 +147,7 @@ resource "aws_lb_listener_rule" "api_prelive" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.api.arn
+    target_group_arn = aws_lb_target_group.api_prelive.arn
   }
 
   condition {
