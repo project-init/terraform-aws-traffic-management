@@ -217,3 +217,20 @@ resource "aws_security_group_rule" "internal_load_balancer_egress" {
   cidr_blocks       = ["0.0.0.0/0"]
   ipv6_cidr_blocks  = ["::/0"]
 }
+
+########################################################################################################################
+### Internal Load Balancer
+########################################################################################################################
+
+resource "aws_route53_record" "domain" {
+  name = local.api_domain_name
+  type = "A"
+
+  alias {
+    name                   = aws_alb.internal_load_balancer.dns_name
+    zone_id                = aws_alb.internal_load_balancer.zone_id
+    evaluate_target_health = true
+  }
+
+  zone_id = var.hosted_zone_id
+}
