@@ -57,14 +57,14 @@ variable "secure_token" {
 ########################################################################################################################
 
 variable "allowed_country_codes" {
-  type = list(string)
-  default = ["US"]
+  type        = list(string)
+  default     = ["US"]
   description = "The country codes to allow traffic from."
 }
 
 variable "ip_rate_limit" {
-  type = number
-  default = 1000
+  type        = number
+  default     = 1000
   description = "The amount of requests to allow from an individual IP over 5 minutes before blocking."
 }
 
