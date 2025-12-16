@@ -1,3 +1,7 @@
+########################################################################################################################
+### Load Balancer
+########################################################################################################################
+
 output "internal_lb_name" {
   value       = aws_alb.internal_load_balancer.name
   description = "The name of the internal load balancer."
@@ -36,4 +40,13 @@ output "api_target_group_arn" {
 output "api_prelive_target_group_arn" {
   value       = aws_lb_target_group.api_prelive.arn
   description = "The ARN for the target group managing the Prelive API service."
+}
+
+########################################################################################################################
+### WAF
+########################################################################################################################
+
+output "wafv2_web_acl_arn" {
+  value       = aws_wafv2_web_acl.waf.arn
+  description = "The ARN of the WAF."
 }

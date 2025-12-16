@@ -219,7 +219,90 @@ resource "aws_security_group_rule" "internal_load_balancer_egress" {
 }
 
 ########################################################################################################################
-### Internal Load Balancer
+### Cloudfront
+########################################################################################################################
+
+resource "aws_cloudfront_vpc_origin" "alb" {
+  vpc_origin_endpoint_config {
+    name                   = local.origin_name
+    arn                    = aws_alb.internal_load_balancer.arn
+    http_port              = 80
+    https_port             = 443
+    origin_protocol_policy = "https-only"
+
+    origin_ssl_protocols {
+      items    = ["TLSv1.2"]
+      quantity = 1
+    }
+  }
+
+  timeouts {
+    # This takes a long time so give it the extra length timeout.
+    create = "30m"
+  }
+}
+
+resource "aws_cloudfront_distribution" "alb_distribution" {
+  enabled         = true
+  is_ipv6_enabled = true
+  aliases         = [local.api_domain_name]
+
+  # Use the cheapest US based option initially. 200 gives more countries, and ALL gives all. Each "upgrade" costs more.
+  price_class = "PriceClass_100"
+
+  web_acl_id = aws_wafv2_web_acl.waf.arn
+
+  origin {
+    domain_name = aws_alb.internal_load_balancer.dns_name
+    origin_id   = local.origin_name
+
+    vpc_origin_config {
+      vpc_origin_id = aws_cloudfront_vpc_origin.alb.id
+    }
+
+    # Add a custom HTTP header to authenticate requests from CloudFront
+    custom_header {
+      name  = "X-Allow"
+      value = local.secure_token
+    }
+  }
+
+  default_cache_behavior {
+    target_origin_id       = local.origin_name
+    viewer_protocol_policy = "redirect-to-https"
+
+    min_ttl     = 0
+    default_ttl = 0
+    max_ttl     = 0
+
+    forwarded_values {
+      query_string = true
+      headers      = ["*"]
+
+      cookies {
+        forward = "all"
+      }
+    }
+
+    allowed_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]
+    cached_methods  = ["GET", "HEAD", "OPTIONS"]
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "whitelist"
+      locations        = ["US"]
+    }
+  }
+
+  viewer_certificate {
+    acm_certificate_arn = var.acm_certificate_arn
+    ssl_support_method  = "sni-only"
+  }
+}
+
+########################################################################################################################
+### Route53
 ########################################################################################################################
 
 resource "aws_route53_record" "domain" {
@@ -227,10 +310,100 @@ resource "aws_route53_record" "domain" {
   type = "A"
 
   alias {
-    name                   = aws_alb.internal_load_balancer.dns_name
-    zone_id                = aws_alb.internal_load_balancer.zone_id
+    name                   = aws_cloudfront_distribution.alb_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.alb_distribution.hosted_zone_id
     evaluate_target_health = true
   }
 
   zone_id = var.hosted_zone_id
+}
+
+########################################################################################################################
+### WAF
+########################################################################################################################
+
+resource "aws_wafv2_web_acl" "waf" {
+  name        = "waf-${var.environment}"
+  description = "WAF for ${var.environment} Cloudfront"
+  scope       = "CLOUDFRONT"
+
+  default_action {
+    allow {}
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesCommonRuleSet"
+    priority = 0
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+
+        rule_action_override {
+          action_to_use {
+            allow {}
+          }
+          name = "SizeRestrictions_BODY"
+        }
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "AWS-AWSManagedRulesCommonRuleSet"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesAmazonIpReputationList"
+    priority = 1
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAmazonIpReputationList"
+        vendor_name = "AWS"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "AWS-AWSManagedRulesAmazonIpReputationList"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesSQLiRuleSet"
+    priority = 2
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesSQLiRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "AWS-AWSManagedRulesSQLiRuleSet"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = false
+    metric_name                = "WAF-Metrics"
+    sampled_requests_enabled   = false
+  }
 }
