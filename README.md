@@ -86,4 +86,5 @@ No modules.
 | <a name="output_internal_lb_name"></a> [internal\_lb\_name](#output\_internal\_lb\_name) | The name of the internal load balancer. |
 | <a name="output_internal_lb_security_group_id"></a> [internal\_lb\_security\_group\_id](#output\_internal\_lb\_security\_group\_id) | The Security Group ID of the internal load balancer. |
 | <a name="output_internal_lb_zone_id"></a> [internal\_lb\_zone\_id](#output\_internal\_lb\_zone\_id) | The Zone ID of the internal load balancer. |
+| <a name="output_wafv2_web_acl_arn"></a> [wafv2\_web\_acl\_arn](#output\_wafv2\_web\_acl\_arn) | The ARN of the WAF. |
 <!-- END_TF_DOCS -->

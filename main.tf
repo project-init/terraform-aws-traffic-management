@@ -219,7 +219,7 @@ resource "aws_security_group_rule" "internal_load_balancer_egress" {
 }
 
 ########################################################################################################################
-### Cloudfront and WAF
+### Cloudfront
 ########################################################################################################################
 
 resource "aws_cloudfront_vpc_origin" "alb" {
@@ -301,6 +301,10 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
   }
 }
 
+########################################################################################################################
+### Route53
+########################################################################################################################
+
 resource "aws_route53_record" "domain" {
   name = local.api_domain_name
   type = "A"
@@ -313,6 +317,10 @@ resource "aws_route53_record" "domain" {
 
   zone_id = var.hosted_zone_id
 }
+
+########################################################################################################################
+### WAF
+########################################################################################################################
 
 resource "aws_wafv2_web_acl" "waf" {
   name        = "waf-${var.environment}"
@@ -389,51 +397,6 @@ resource "aws_wafv2_web_acl" "waf" {
     visibility_config {
       cloudwatch_metrics_enabled = false
       metric_name                = "AWS-AWSManagedRulesSQLiRuleSet"
-      sampled_requests_enabled   = false
-    }
-  }
-
-  rule {
-    name     = "AccountTakeoverProtection"
-    priority = 3
-
-    override_action {
-      count {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesATPRuleSet"
-        vendor_name = "AWS"
-
-        managed_rule_group_configs {
-          aws_managed_rules_atp_rule_set {
-            login_path = "/v1/login"
-
-            request_inspection {
-              payload_type = "FORM_ENCODED"
-              username_field {
-                identifier = "/email"
-              }
-              password_field {
-                identifier = "/password"
-              }
-            }
-
-            response_inspection {
-              status_code {
-                failure_codes = ["403"]
-                success_codes = ["200"]
-              }
-            }
-          }
-        }
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = false
-      metric_name                = "AWS-AWSManagedRulesATPRuleSet"
       sampled_requests_enabled   = false
     }
   }
