@@ -401,6 +401,56 @@ resource "aws_wafv2_web_acl" "waf" {
     }
   }
 
+  rule {
+    name     = "AWS-AWSManagedRulesAnonymousIpList"
+    priority = 3
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesAnonymousIpList"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "AWS-AWSManagedRulesAnonymousIpList"
+      sampled_requests_enabled   = false
+    }
+  }
+
+  rule {
+    name     = "IPRateLimit"
+    priority = 4
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = var.ip_rate_limit
+        aggregate_key_type = "IP"
+
+        scope_down_statement {
+          geo_match_statement {
+            country_codes = var.allowed_country_codes
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "IPRateLimit"
+      sampled_requests_enabled   = false
+    }
+  }
+
   visibility_config {
     cloudwatch_metrics_enabled = false
     metric_name                = "WAF-Metrics"

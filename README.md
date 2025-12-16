@@ -65,10 +65,12 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_acm_certificate_arn"></a> [acm\_certificate\_arn](#input\_acm\_certificate\_arn) | The ACM Cert ARN for the main domain. | `string` | n/a | yes |
+| <a name="input_allowed_country_codes"></a> [allowed\_country\_codes](#input\_allowed\_country\_codes) | The country codes to allow traffic from. | `list(string)` | <pre>[<br/>  "US"<br/>]</pre> | no |
 | <a name="input_api_health_check_path"></a> [api\_health\_check\_path](#input\_api\_health\_check\_path) | The path of the health check endpoint on your API server. | `string` | `"/health"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | The main domain being used in the account. Will be prefixed with api. to control API traffic. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment name being deployed to. | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the Hosted Zone to use for routing. | `string` | n/a | yes |
+| <a name="input_ip_rate_limit"></a> [ip\_rate\_limit](#input\_ip\_rate\_limit) | The amount of requests to allow from an individual IP over 5 minutes before blocking. | `number` | `1000` | no |
 | <a name="input_ipv4_primary_cidr_block"></a> [ipv4\_primary\_cidr\_block](#input\_ipv4\_primary\_cidr\_block) | The IPV4 CIDR Block of the VPC. | `string` | n/a | yes |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | The private subnet ids of the VPC. | `list(string)` | n/a | yes |
 | <a name="input_secure_token"></a> [secure\_token](#input\_secure\_token) | The secure token to set to ensure only Cloudfront is used when public traffic trickles down to the Internal LB. Should set with a initially, then changed to an empty string and controlled via the parameter store. | `string` | `""` | no |
