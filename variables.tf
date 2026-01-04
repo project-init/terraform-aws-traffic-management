@@ -33,10 +33,16 @@ variable "api_health_check_path" {
   description = "The path of the health check endpoint on your API server."
 }
 
+variable "api_prefix" {
+  type        = string
+  default     = "api"
+  description = "The prefix of the domain being used in the account. Defaults to api (i.e. api.your-domain.com)"
+}
+
 variable "domain" {
   type        = string
   nullable    = false
-  description = "The main domain being used in the account. Will be prefixed with api. to control API traffic."
+  description = "The main domain being used in the account. Will be prefixed with api_prefix to control API traffic."
 }
 
 variable "acm_certificate_arn" {

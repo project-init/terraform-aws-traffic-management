@@ -67,7 +67,8 @@ No modules.
 | <a name="input_acm_certificate_arn"></a> [acm\_certificate\_arn](#input\_acm\_certificate\_arn) | The ACM Cert ARN for the main domain. | `string` | n/a | yes |
 | <a name="input_allowed_country_codes"></a> [allowed\_country\_codes](#input\_allowed\_country\_codes) | The country codes to allow traffic from. | `list(string)` | <pre>[<br/>  "US"<br/>]</pre> | no |
 | <a name="input_api_health_check_path"></a> [api\_health\_check\_path](#input\_api\_health\_check\_path) | The path of the health check endpoint on your API server. | `string` | `"/health"` | no |
-| <a name="input_domain"></a> [domain](#input\_domain) | The main domain being used in the account. Will be prefixed with api. to control API traffic. | `string` | n/a | yes |
+| <a name="input_api_prefix"></a> [api\_prefix](#input\_api\_prefix) | The prefix of the domain being used in the account. Defaults to api (i.e. api.your-domain.com) | `string` | `"api"` | no |
+| <a name="input_domain"></a> [domain](#input\_domain) | The main domain being used in the account. Will be prefixed with api\_prefix to control API traffic. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment name being deployed to. | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the Hosted Zone to use for routing. | `string` | n/a | yes |
 | <a name="input_ip_rate_limit"></a> [ip\_rate\_limit](#input\_ip\_rate\_limit) | The amount of requests to allow from an individual IP over 5 minutes before blocking. | `number` | `1000` | no |
