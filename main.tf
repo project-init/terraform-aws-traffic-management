@@ -1,6 +1,6 @@
 locals {
   secure_token    = var.secure_token == "" ? data.aws_ssm_parameter.secure_token[0].value : var.secure_token
-  api_domain_name = "api.${var.domain}"
+  api_domain_name = "${var.api_prefix}.${var.domain}"
   origin_name     = "internal-alb-vpc-origin"
 }
 
